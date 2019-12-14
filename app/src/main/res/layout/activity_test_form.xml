@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_test"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <CheckBox
+        android:id="@+id/cb_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="垂直滚动"
+        android:textSize="20sp"
+        android:checked="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_test"/>
+
+    <CheckBox
+        android:id="@+id/cb_h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="水平滚动"
+        android:textSize="20sp"
+        android:checked="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_test"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="隐藏or显示"
+        android:onClick="onTestClick"
+        app:layout_constraintLeft_toRightOf="@id/cb_v"
+        app:layout_constraintRight_toLeftOf="@id/cb_h"
+        app:layout_constraintTop_toTopOf="@id/cb_v"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">FormDemo</string>
+
+    <string-array name="form_title">
+        <item>名称</item>
+        <item>属性</item>
+        <item>等级/阶级</item>
+        <item>攻击力</item>
+        <item>防御力</item>
+        <item>种族</item>
+        <item>类型1</item>
+        <item>类型2</item>
+    </string-array>
+</resources>

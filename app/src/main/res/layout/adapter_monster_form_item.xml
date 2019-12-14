@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_item"
+    android:layout_width="100dp"
+    android:layout_height="40dp"
+    android:background="@drawable/shape_item"
+    android:textColor="#ffffff"
+    android:textSize="17sp"
+    android:gravity="center"
+    android:maxLines="1"
+    android:autoSizeMinTextSize="10dp"
+    android:autoSizeTextType="uniform"
+    android:autoSizeMaxTextSize="17sp"
+    tools:text="真红眼黑龙" />

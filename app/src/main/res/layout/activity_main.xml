@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="测试表单"
+        android:onClick="onTestClick" />
+
+    <Button
+        android:id="@+id/btn_hform"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="水平排列表单"
+        android:onClick="onHClick" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="垂直排列表单"
+        android:onClick="onVClick" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="顶部左侧都有标题表单"
+        android:onClick="onHVClick" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="T型表格"
+        android:onClick="onTFormClick" />
+
+</LinearLayout>
