@@ -49,8 +49,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
 
     /**
      * 什么场景需要传入RecyclerView
-     * 1、起始默认要滚动到最右边
-     * 2、在滚动过程会刷新的数据的时候，最好也设置RecyclerView
+     * 在滚动过程会刷新的数据的时候，最好设置RecyclerView
      */
     public FormLayoutManager(int columnCount, RecyclerView recyclerView){
         this(true, columnCount, recyclerView);
