@@ -26,7 +26,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
     // 保存可视View的下标
     private int[][] mVisibleChildIndexs;
     private RecyclerView mRecyclerView;
-    private int mItemCount;
+    protected int mItemCount;
     private int mItemWidth, mItemHeight;
     // 是水平排列还是垂直，默认水平
     private boolean mIsHorV = true;
