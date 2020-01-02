@@ -108,18 +108,16 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         if (mItemCount != getItemCount()){
             mItemCount = 0;
         }
-        if (mItemCount == 0){
+        if (mItemCount == 0 || mRecyclerView == null){
             mItemCount = getItemCount();
             handleLayoutChildren(recycler);
         }else{
-            if (mRecyclerView != null){
-                // 防止数据在更新的时候，用户又在滑动表格，这时会看到卡顿现象
-                // 第二种刷新当前界面可视的view，不过要设置RecyclerView，但刷新时间短
-                for (int i = 0; i < getChildCount(); i++) {
-                    View child = getChildAt(i);
-                    int position = getPosition(child);
-                    mRecyclerView.getAdapter().onBindViewHolder(mRecyclerView.getChildViewHolder(child), position);
-                }
+            // 防止数据在更新的时候，用户又在滑动表格，这时会看到卡顿现象
+            // 第二种刷新当前界面可视的view，不过要设置RecyclerView，但刷新时间短
+            for (int i = 0; i < getChildCount(); i++) {
+                View child = getChildAt(i);
+                int position = getPosition(child);
+                mRecyclerView.getAdapter().onBindViewHolder(mRecyclerView.getChildViewHolder(child), position);
             }
         }
     }
@@ -161,12 +159,12 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
             }
         }
 
-        if ((mStartShowType & RIGHT) > 0){
+        if ((mStartShowType & RIGHT) > 0 && mDefaultStartDx == 0){
             mDefaultStartDx = mTotalWidth - getHorizontalSpace();
             mSumDx = mDefaultStartDx;
         }
 
-        if ((mStartShowType & BOTTOM) > 0){
+        if ((mStartShowType & BOTTOM) > 0 && mDefaultStartDy == 0){
             mDefaultStartDy = mTotalHeight - getVerticalSpace();
             mSumDy = mDefaultStartDy;
         }
