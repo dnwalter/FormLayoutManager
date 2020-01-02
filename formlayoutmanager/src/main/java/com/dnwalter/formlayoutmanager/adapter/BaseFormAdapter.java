@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseFormAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public final static int TYPE_DEFAULT = 0;
     public Context mContext;
     // 数据源
     public List<T> mList;
@@ -25,6 +26,22 @@ public abstract class BaseFormAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     @Override
     public int getItemCount() {
         return getRowCount() * getColumnCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        int rowIndex = position / getColumnCount();
+        int columnIndex = position % getColumnCount();
+        int rowType = getRowItemViewType(rowIndex);
+        int columnType = getColumnItemViewType(columnIndex);
+        if (rowType != TYPE_DEFAULT){
+            return rowType;
+        }
+        if (columnType != TYPE_DEFAULT){
+            return columnType;
+        }
+
+        return TYPE_DEFAULT;
     }
 
     @Override
@@ -86,5 +103,23 @@ public abstract class BaseFormAdapter<T> extends RecyclerView.Adapter<RecyclerVi
      */
     protected void setData(RecyclerView.ViewHolder viewHolder, int rowIndex, int columnIndex, String content) {
 
+    }
+
+    /**
+     * 根据不同行获取itemViewType
+     * @param row
+     * @return
+     */
+    protected int getRowItemViewType(int row){
+        return TYPE_DEFAULT;
+    }
+
+    /**
+     *  根据不同列获取itemViewType
+     * @param column
+     * @return
+     */
+    protected int getColumnItemViewType(int column){
+        return TYPE_DEFAULT;
     }
 }
