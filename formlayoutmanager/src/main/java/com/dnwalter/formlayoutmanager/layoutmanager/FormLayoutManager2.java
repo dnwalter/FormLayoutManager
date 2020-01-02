@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.dnwalter.formlayoutmanager.layoutmanager.FormLayoutManager.StartShowType.BOTTOM;
 import static com.dnwalter.formlayoutmanager.layoutmanager.FormLayoutManager.StartShowType.RIGHT;
@@ -27,7 +29,9 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
     private int[][] mVisibleChildIndexs;
     private RecyclerView mRecyclerView;
     protected int mItemCount;
-    private int mItemWidth, mItemHeight;
+    // 根据类型获取宽高的map
+    private Map<Integer, Integer> mItemWidthMap = new HashMap<>();
+    private Map<Integer, Integer> mItemHeightMap = new HashMap<>();
     // 是水平排列还是垂直，默认水平
     private boolean mIsHorV = true;
     // 所有item的rect
@@ -147,11 +151,6 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
         mItemWidth = getDecoratedMeasuredWidth(childView);
         mItemHeight = getDecoratedMeasuredHeight(childView);
 
-        //如果所有子View的高度和没有填满RecyclerView的高度，
-        // 则将高度设置为RecyclerView的高度
-        mTotalWidth = Math.max(mColumnCount * mItemWidth, getHorizontalSpace());
-        mTotalHeight = Math.max(mRowCount * mItemHeight, getVerticalSpace());
-
         mVisibleRowCount = (int) Math.ceil(getVerticalSpace() * 1f / mItemHeight) + 1;
         mVisibleColumnCount = (int) Math.ceil(getHorizontalSpace() * 1f / mItemWidth) + 1;
         mVisibleChildIndexs = new int[mVisibleRowCount][mVisibleColumnCount];
@@ -178,10 +177,26 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
             // item所在的行和列的index
             int row = i / mColumnCount;
             int column = i % mColumnCount;
-            int left = mItemWidth * column;
-            int right = mItemWidth * (column + 1);
-            int top = mItemHeight * row;
-            int bottom = mItemHeight * (row + 1);
+
+            View itemView = recycler.getViewForPosition(i);
+            Integer itemViewType = getItemViewType(itemView);
+            int itemWidth;
+            int itemHeight;
+            if (mItemWidthMap.containsKey(itemViewType)){
+                itemWidth = mItemWidthMap.get(itemViewType);
+                itemHeight = mItemHeightMap.get(itemViewType);
+            }else{
+                measureChildWithMargins(itemView, 0, 0);
+                itemWidth = getDecoratedMeasuredWidth(childView);
+                itemHeight = getDecoratedMeasuredHeight(childView);
+                mItemWidthMap.put(itemViewType, itemWidth);
+                mItemHeightMap.put(itemViewType, itemHeight);
+            }
+
+            int left = mTotalWidth;
+            int right = mTotalWidth + itemWidth;
+            int top = mTotalHeight;
+            int bottom = mTotalHeight + itemHeight;
 
             Rect rect = new Rect(left, top, right, bottom);
 
@@ -191,7 +206,15 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
                 firstShowRow = row;
                 firstShowCol = column;
             }
+
+            mTotalWidth += itemWidth;
+            mTotalHeight += itemHeight;
         }
+
+        //如果所有子View的高度和没有填满RecyclerView的高度，
+        // 则将高度设置为RecyclerView的高度
+        mTotalWidth = Math.max(mTotalWidth, getHorizontalSpace());
+        mTotalHeight = Math.max(mTotalHeight, getVerticalSpace());
 
         /**
          * 第一次加载数据的时候，下面的代码只加载起始默认滚动到的位置的view
