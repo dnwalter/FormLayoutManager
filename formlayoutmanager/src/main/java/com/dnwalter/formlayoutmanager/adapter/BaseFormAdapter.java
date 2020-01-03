@@ -106,7 +106,7 @@ public abstract class BaseFormAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     }
 
     /**
-     * 根据不同行获取itemViewType
+     * 根据不同行获取itemViewType（注：与getColumnItemViewType只能重写其中一个）
      * @param row
      * @return
      */
@@ -115,7 +115,7 @@ public abstract class BaseFormAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     }
 
     /**
-     *  根据不同列获取itemViewType
+     *  根据不同列获取itemViewType （注：与getRowItemViewType只能重写其中一个）
      * @param column
      * @return
      */

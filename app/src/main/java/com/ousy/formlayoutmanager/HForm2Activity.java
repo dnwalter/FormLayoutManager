@@ -8,12 +8,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.dnwalter.formlayoutmanager.helper.FormScrollHelper;
 import com.dnwalter.formlayoutmanager.layoutmanager.FormLayoutManager;
-import com.dnwalter.formlayoutmanager.layoutmanager.FormLayoutManager2;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.ousy.formlayoutmanager.adapter.MonsterHAdapter;
 import com.ousy.formlayoutmanager.adapter.MonsterHAdapterByType;
-import com.ousy.formlayoutmanager.adapter.TitleAdapter;
 import com.ousy.formlayoutmanager.adapter.TitleAdapterbyType;
 import com.ousy.formlayoutmanager.entity.DataJson;
 import com.ousy.formlayoutmanager.entity.Monster;
@@ -43,7 +40,7 @@ public class HForm2Activity extends AppCompatActivity {
         TitleAdapterbyType rightTitleAdapter = new TitleAdapterbyType(titleList);
         rvTitle.setAdapter(rightTitleAdapter);
 
-        FormLayoutManager2 layoutManager = new FormLayoutManager2(8);
+        FormLayoutManager layoutManager = new FormLayoutManager(8);
         mRecyclerView.setLayoutManager(layoutManager);
 
         List<Monster> list = new Gson().fromJson(DataJson.MONSTER_DATA, new TypeToken<List<Monster>>(){}.getType());
