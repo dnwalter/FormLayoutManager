@@ -25,8 +25,6 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
     protected int mDefaultStartDx, mDefaultStartDy;
     private int mTotalHeight, mTotalWidth;
     private int mRowCount, mColumnCount;
-    // 保存可视View的下标
-    private int[][] mVisibleChildIndexs;
     private RecyclerView mRecyclerView;
     protected int mItemCount;
     // 根据类型获取宽高的map
