@@ -34,4 +34,8 @@ public class MainActivity extends AppCompatActivity {
     public void onTFormClick(View view){
         startActivity(new Intent(this, TFormActivity.class));
     }
+
+    public void onHByTypeClick(View view){
+        startActivity(new Intent(this, HForm2Activity.class));
+    }
 }

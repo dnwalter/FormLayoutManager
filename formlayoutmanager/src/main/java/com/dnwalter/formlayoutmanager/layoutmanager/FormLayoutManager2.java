@@ -4,6 +4,8 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.dnwalter.formlayoutmanager.entity.ItemViewSize;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,15 +25,12 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
     protected int mDefaultStartDx, mDefaultStartDy;
     private int mTotalHeight, mTotalWidth;
     private int mRowCount, mColumnCount;
-    // 可视的最大行数，列数
-    private int mVisibleRowCount, mVisibleColumnCount;
     // 保存可视View的下标
     private int[][] mVisibleChildIndexs;
     private RecyclerView mRecyclerView;
     protected int mItemCount;
     // 根据类型获取宽高的map
-    private Map<Integer, Integer> mItemWidthMap = new HashMap<>();
-    private Map<Integer, Integer> mItemHeightMap = new HashMap<>();
+    private Map<Integer, ItemViewSize> mItemViewSizeMap = new HashMap<>();
     // 是水平排列还是垂直，默认水平
     private boolean mIsHorV = true;
     // 所有item的rect
@@ -112,18 +111,16 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
         if (mItemCount != getItemCount()){
             mItemCount = 0;
         }
-        if (mItemCount == 0){
+        if (mItemCount == 0 || mRecyclerView == null){
             mItemCount = getItemCount();
             handleLayoutChildren(recycler);
         }else{
-            if (mRecyclerView != null){
-                // 防止数据在更新的时候，用户又在滑动表格，这时会看到卡顿现象
-                // 第二种刷新当前界面可视的view，不过要设置RecyclerView，但刷新时间短
-                for (int i = 0; i < getChildCount(); i++) {
-                    View child = getChildAt(i);
-                    int position = getPosition(child);
-                    mRecyclerView.getAdapter().onBindViewHolder(mRecyclerView.getChildViewHolder(child), position);
-                }
+            // 防止数据在更新的时候，用户又在滑动表格，这时会看到卡顿现象
+            // 第二种刷新当前界面可视的view，不过要设置RecyclerView，但刷新时间短
+            for (int i = 0; i < getChildCount(); i++) {
+                View child = getChildAt(i);
+                int position = getPosition(child);
+                mRecyclerView.getAdapter().onBindViewHolder(mRecyclerView.getChildViewHolder(child), position);
             }
         }
     }
@@ -145,34 +142,11 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
 
         detachAndScrapAttachedViews(recycler);
 
-        //将item的位置存储起来
-        View childView = recycler.getViewForPosition(0);
-        measureChildWithMargins(childView, 0, 0);
-        mItemWidth = getDecoratedMeasuredWidth(childView);
-        mItemHeight = getDecoratedMeasuredHeight(childView);
-
-        mVisibleRowCount = (int) Math.ceil(getVerticalSpace() * 1f / mItemHeight) + 1;
-        mVisibleColumnCount = (int) Math.ceil(getHorizontalSpace() * 1f / mItemWidth) + 1;
-        mVisibleChildIndexs = new int[mVisibleRowCount][mVisibleColumnCount];
-        for (int row = 0; row < mVisibleRowCount; row++){
-            for(int col = 0; col < mVisibleColumnCount; col++){
-                mVisibleChildIndexs[row][col] = row * mVisibleColumnCount + col;
-            }
-        }
-
-        if ((mStartShowType & RIGHT) > 0){
-            mDefaultStartDx = mTotalWidth - getHorizontalSpace();
-            mSumDx = mDefaultStartDx;
-        }
-
-        if ((mStartShowType & BOTTOM) > 0){
-            mDefaultStartDy = mTotalHeight - getVerticalSpace();
-            mSumDy = mDefaultStartDy;
-        }
-
         // 第一个显示在界面的item的下标
         int firstShowRow = -1;
         int firstShowCol = -1;
+        mCurRow = 0;
+        mCurColumn = 0;
         for (int i = 0; i < getItemCount(); i++) {
             // item所在的行和列的index
             int row = i / mColumnCount;
@@ -182,53 +156,83 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
             Integer itemViewType = getItemViewType(itemView);
             int itemWidth;
             int itemHeight;
-            if (mItemWidthMap.containsKey(itemViewType)){
-                itemWidth = mItemWidthMap.get(itemViewType);
-                itemHeight = mItemHeightMap.get(itemViewType);
+            if (mItemViewSizeMap.containsKey(itemViewType)){
+                itemWidth = mItemViewSizeMap.get(itemViewType).width;
+                itemHeight = mItemViewSizeMap.get(itemViewType).height;
             }else{
                 measureChildWithMargins(itemView, 0, 0);
-                itemWidth = getDecoratedMeasuredWidth(childView);
-                itemHeight = getDecoratedMeasuredHeight(childView);
-                mItemWidthMap.put(itemViewType, itemWidth);
-                mItemHeightMap.put(itemViewType, itemHeight);
+                itemWidth = getDecoratedMeasuredWidth(itemView);
+                itemHeight = getDecoratedMeasuredHeight(itemView);
+                mItemViewSizeMap.put(itemViewType, new ItemViewSize(itemWidth, itemHeight));
             }
 
-            int left = mTotalWidth;
-            int right = mTotalWidth + itemWidth;
-            int top = mTotalHeight;
-            int bottom = mTotalHeight + itemHeight;
-
-            Rect rect = new Rect(left, top, right, bottom);
-
+            Rect rect = getViewRect(row, column, itemWidth, itemHeight);
             mItemRects.add(rect);
             mHasAttachedItems.add(false);
             if (Rect.intersects(getVisibleArea(), rect) && firstShowRow == -1){
                 firstShowRow = row;
                 firstShowCol = column;
             }
-
-            mTotalWidth += itemWidth;
-            mTotalHeight += itemHeight;
         }
+
+        Rect lastRect = mItemRects.get(mItemRects.size() - 1);
 
         //如果所有子View的高度和没有填满RecyclerView的高度，
         // 则将高度设置为RecyclerView的高度
-        mTotalWidth = Math.max(mTotalWidth, getHorizontalSpace());
-        mTotalHeight = Math.max(mTotalHeight, getVerticalSpace());
+        mTotalWidth = Math.max(lastRect.right, getHorizontalSpace());
+        mTotalHeight = Math.max(lastRect.bottom, getVerticalSpace());
+
+        if ((mStartShowType & RIGHT) > 0 && mDefaultStartDx == 0){
+            mDefaultStartDx = mTotalWidth - getHorizontalSpace();
+            mSumDx = mDefaultStartDx;
+        }
+
+        if ((mStartShowType & BOTTOM) > 0 && mDefaultStartDy == 0){
+            mDefaultStartDy = mTotalHeight - getVerticalSpace();
+            mSumDy = mDefaultStartDy;
+        }
+
+        /**
+         * 计算可视个数和下标
+         * 由于itemView可以有不同的type，那个itemView的宽高可能会不一样
+         * 故以最小的宽和最小的高来计算最大可视数
+         */
+        int minWidth = 0;
+        int minHeight = 0;
+        for (ItemViewSize viewSize : mItemViewSizeMap.values()){
+            if (minWidth == 0){
+                minWidth = viewSize.width;
+                minHeight = viewSize.height;
+            }else{
+                if (viewSize.width < minWidth){
+                    minWidth = viewSize.width;
+                }
+                if (viewSize.height < minHeight){
+                    minHeight = viewSize.height;
+                }
+            }
+        }
+
+        // 可视的最大行数，列数
+        int visibleRowCount = (int) Math.ceil(getVerticalSpace() * 1f / minHeight) + 1;
+        int visibleColumnCount = (int) Math.ceil(getHorizontalSpace() * 1f / minWidth) + 1;
 
         /**
          * 第一次加载数据的时候，下面的代码只加载起始默认滚动到的位置的view
          * 第一种只刷新当前界面可视的view
          */
         here:
-        for (int row = firstShowRow; row < mVisibleRowCount + firstShowRow; row++) {
-            for (int column = firstShowCol; column < mVisibleColumnCount + firstShowCol; column++) {
+        for (int row = firstShowRow; row < visibleRowCount + firstShowRow; row++) {
+            for (int column = firstShowCol; column < visibleColumnCount + firstShowCol; column++) {
                 int itemPosition = row * mColumnCount + column;
 
                 if (itemPosition >= mItemRects.size()){
                     break here;
                 }
                 Rect rect = mItemRects.get(itemPosition);
+                if (!Rect.intersects(getVisibleArea(), rect)){
+                    continue;
+                }
                 View view = recycler.getViewForPosition(itemPosition);
                 addView(view);
                 //addView后一定要measure，先measure再layout
@@ -236,6 +240,39 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
                 layoutDecorated(view, rect.left - mSumDx, rect.top - mSumDy, rect.right - mSumDx, rect.bottom - mSumDy);
             }
         }
+    }
+
+    // 记录getViewRect当前行
+    private int mCurRow;
+    private int mCurColumn;
+
+    // 获取view对应的Rect
+    private Rect getViewRect(int row, int column, int itemWidth, int itemHeight) {
+        int left = 0;
+        int right = itemWidth;
+        int top = 0;
+        int bottom = itemHeight;
+
+        if (mItemRects.size() > 0){
+            Rect lastRect = mItemRects.get(mItemRects.size() - 1);
+            if (mCurRow != row){
+                mCurRow = row;
+                left = 0;
+                right = itemWidth;
+                top = lastRect.bottom;
+                bottom = top + itemHeight;
+            }else if (mCurColumn != column){
+                mCurColumn = column;
+                left = lastRect.right;
+                right = left + itemWidth;
+                top = lastRect.top;
+                bottom = lastRect.bottom;
+            }
+        }
+
+        Rect rect = new Rect(left, top, right, bottom);
+
+        return rect;
     }
 
     // RecyclerView可视内容的高度
@@ -444,45 +481,18 @@ public class FormLayoutManager2 extends RecyclerView.LayoutManager {
         Rect rect = mItemRects.get(pos);
         if (Rect.intersects(visibleRect, rect) && !mHasAttachedItems.get(pos)) {
             View child = recycler.getViewForPosition(pos);
-            int index = getChildViewIndex(pos, minPos, isSmoothRight);
-            addView(child, index);
+            if (isSmoothRight){
+                addView(child, 0);
+            }else{
+                addView(child);
+            }
+
             measureChildWithMargins(child, 0, 0);
             layoutDecoratedWithMargins(child, rect.left - mSumDx, rect.top - mSumDy, rect.right - mSumDx,
                     rect.bottom - mSumDy);
 
             mHasAttachedItems.set(pos, true);
         }
-    }
-
-    /**
-     * 获取要显示在可视的childview里面的index
-     * @param pos 当前view在整个列表的pos
-     * @param minPos 可视即现在左上角view在整个列表的pos
-     * @param isSmoothRight
-     * @return
-     */
-    private int getChildViewIndex(int pos, int minPos, boolean isSmoothRight) {
-        // 这个是该view在整个列表的第几行第几列
-        int row = pos / mColumnCount;
-        int column = pos % mColumnCount;
-        int minRow = minPos / mColumnCount;
-        int minColumn = minPos % mColumnCount;
-
-        int x = row - minRow;
-        int y = isSmoothRight ? 0 : column - minColumn;
-        if (x < 0){
-            x = 0;
-        }
-        if (x >= mVisibleRowCount){
-            x = mVisibleRowCount - 1;
-        }
-        if (y < 0){
-            y = 0;
-        }
-        if (y >= mVisibleColumnCount){
-            y = mVisibleColumnCount - 1;
-        }
-        return isSmoothRight ? mVisibleChildIndexs[x][y] - x : mVisibleChildIndexs[x][y];
     }
 
     /**

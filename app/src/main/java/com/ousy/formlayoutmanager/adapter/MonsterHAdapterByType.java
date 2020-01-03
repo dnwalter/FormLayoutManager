@@ -17,8 +17,8 @@ import java.util.List;
  * 不同类型获取不同布局
  */
 public class MonsterHAdapterByType extends BaseHFormAdapter<Monster> {
-    private final static int TYPE_ATTRIBUTE = 1;
-    private final static int TYPE_MONSTER_TYPE = 2;
+    public final static int TYPE_ATTRIBUTE = 1;
+    public final static int TYPE_MONSTER_TYPE = 2;
 
     public MonsterHAdapterByType(Context context) {
         super(context);

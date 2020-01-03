@@ -420,7 +420,12 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         if (Rect.intersects(visibleRect, rect) && !mHasAttachedItems.get(pos)) {
             View child = recycler.getViewForPosition(pos);
             int index = getChildViewIndex(pos, minPos, isSmoothRight);
-            addView(child, index);
+            if (isSmoothRight){
+                addView(child, 0);
+            }else{
+                addView(child);
+            }
+//            addView(child, index);
             measureChildWithMargins(child, 0, 0);
             layoutDecoratedWithMargins(child, rect.left - mSumDx, rect.top - mSumDy, rect.right - mSumDx,
                     rect.bottom - mSumDy);
