@@ -16,9 +16,9 @@
 		maven { url 'https://jitpack.io' }
 	    }
 	}
-#### 2、在要使用这个FormLayoutManager的module的build.gradle添加依赖(后面v1.1的版本号，可以根据releases里面最新的版本进行替换)
+#### 2、在要使用这个FormLayoutManager的module的build.gradle添加依赖(后面v2.0的版本号，可以根据releases里面最新的版本进行替换)
     dependencies {
-	        implementation 'com.github.dnwalter:FormLayoutManager:v1.1'
+	        implementation 'com.github.dnwalter:FormLayoutManager:v2.0'
 	}
 
 ## 使用
