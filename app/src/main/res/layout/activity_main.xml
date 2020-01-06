@@ -38,4 +38,10 @@
         android:text="T型表格"
         android:onClick="onTFormClick" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="多类型的表格"
+        android:onClick="onHByTypeClick" />
+
 </LinearLayout>
