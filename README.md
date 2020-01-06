@@ -1,6 +1,7 @@
 # FormLayoutManager
 
 ## 介绍
+#### [博客介绍地址](https://blog.csdn.net/DNWalter/article/details/103744584)
 #### RecyclerView实现表格样式，而自定义的一个LayoutManager。用LayoutManager实现表格，与平时用HorizontalScrollView嵌套RecyclerView来实现表格的区别就是：
 #### 1、LayoutManager实现表格，由始至终就只有一个RecyclerView，没有多余的嵌套；
 #### 2、LayoutManager实现表格，手指滑动的时候可以向任意方向滑动。而以前的方法当你的手指进行水平滑动时，只要手指不松开，是不能进行垂直的滑动的；
