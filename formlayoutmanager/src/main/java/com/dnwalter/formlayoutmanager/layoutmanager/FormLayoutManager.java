@@ -337,7 +337,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         Rect visibleRect = getVisibleArea();
 
         //回收越界子View
-        List<Integer> recylerPostions = new ArrayList<>();
+        List<Integer> recylerPositions = new ArrayList<>();
         List<View> recylerChilds = new ArrayList<>();
         for (int i = getChildCount() - 1; i >= 0; i--) {
             View child = getChildAt(i);
@@ -347,7 +347,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
             if (!Rect.intersects(rect, visibleRect)) {
                 // 先要记录要回收的view和position，不能在这里回收，放在后面回收
                 // 当我们不是手势操作滑动，是调用RecyclerView.scrollBy的方法来滚动大距离是，下面的firstView会变空
-                recylerPostions.add(position);
+                recylerPositions.add(position);
                 recylerChilds.add(child);
             }
             else {
@@ -377,7 +377,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         //回收越界子View
         for (int i = 0; i < recylerChilds.size(); i++){
             removeAndRecycleView(recylerChilds.get(i), recycler);
-            mHasAttachedItems.set(recylerPostions.get(i), false);
+            mHasAttachedItems.set(recylerPositions.get(i), false);
         }
 
         return travel;
@@ -405,7 +405,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         Rect visibleRect = getVisibleArea();
 
         //记录要回收越界子View
-        List<Integer> recylerPostions = new ArrayList<>();
+        List<Integer> recylerPositions = new ArrayList<>();
         List<View> recylerChilds = new ArrayList<>();
         for (int i = getChildCount() - 1; i >= 0; i--) {
             View child = getChildAt(i);
@@ -413,7 +413,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
             Rect rect = mItemRects.get(position);
 
             if (!Rect.intersects(rect, visibleRect)) {
-                recylerPostions.add(position);
+                recylerPositions.add(position);
                 recylerChilds.add(child);
             }
             else {
@@ -443,7 +443,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         //回收越界子View
         for (int i = 0; i < recylerChilds.size(); i++){
             removeAndRecycleView(recylerChilds.get(i), recycler);
-            mHasAttachedItems.set(recylerPostions.get(i), false);
+            mHasAttachedItems.set(recylerPositions.get(i), false);
         }
 
         return travel;
