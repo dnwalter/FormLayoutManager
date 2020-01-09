@@ -357,7 +357,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
             }
         }
 
-        View lastView = getChildAt(getChildCount() - recylerChilds.size() - 1);
+        View lastView = getChildAt(getChildCount() - 1);
         View firstView = getChildAt(0);
         int minPos = getPosition(firstView);
         int maxPos = getPosition(lastView);
