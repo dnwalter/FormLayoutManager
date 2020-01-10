@@ -21,6 +21,10 @@ public class HVSingleRecylerView extends RecyclerView {
     private float mDownX;
     private float mDownY;
 
+    public HVSingleRecylerView(@NonNull Context context) {
+        super(context);
+    }
+
     public HVSingleRecylerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
