@@ -158,6 +158,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
                 measureChildWithMargins(itemView, 0, 0);
                 itemWidth = getDecoratedMeasuredWidth(itemView);
                 itemHeight = getDecoratedMeasuredHeight(itemView);
+                isItemLayoutError(itemWidth, itemHeight);
                 mItemViewSizeMap.put(itemViewType, new ItemViewSize(itemWidth, itemHeight));
             }
 
@@ -243,6 +244,37 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
                 //addView后一定要measure，先measure再layout
                 measureChildWithMargins(view, 0, 0);
                 layoutDecorated(view, rect.left - mSumDx, rect.top - mSumDy, rect.right - mSumDx, rect.bottom - mSumDy);
+            }
+        }
+    }
+
+    /**
+     * 表格是否多类型标志
+     * 0：没多类型，每个格子宽高一样
+     * 1：根据不同列多类型，每个格子高都一样，宽可能不一样
+     * 2：根据不同行多类型，每个格子宽都一样，高可能不一样
+     */
+    private int mFormType = 0;
+    private void isItemLayoutError(int itemWidth, int itemHeight) {
+        if (mItemViewSizeMap.size() > 0){
+            int firstItemWidth = 0;
+            int firstItemHeight = 0;
+            for (ItemViewSize viewSize : mItemViewSizeMap.values()){
+                firstItemWidth = viewSize.width;
+                firstItemHeight = viewSize.height;
+                break;
+            }
+            if (firstItemWidth != itemWidth){
+                if (mFormType == 2){
+                    throw new RuntimeException("多类型表格item的根布局要么宽都要一样，要么高都要一样，不能同时存在宽高都跟其他item不同的布局。");
+                }
+                mFormType = 1;
+            }
+            if (firstItemHeight != itemHeight){
+                if (mFormType == 1){
+                    throw new RuntimeException("多类型表格item的根布局要么宽都要一样，要么高都要一样，不能同时存在宽高都跟其他item不同的布局。");
+                }
+                mFormType = 2;
             }
         }
     }
