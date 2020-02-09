@@ -36,6 +36,9 @@ public abstract class BaseFormAdapter<T> extends RecyclerView.Adapter<RecyclerVi
         int columnIndex = position % getColumnCount();
         int rowType = getRowItemViewType(rowIndex);
         int columnType = getColumnItemViewType(columnIndex);
+        if (rowType != TYPE_DEFAULT && columnType != TYPE_DEFAULT){
+            throw new RuntimeException("不能同时重写getRowItemViewType和getColumnItemViewType");
+        }
         if (rowType != TYPE_DEFAULT){
             return rowType;
         }
