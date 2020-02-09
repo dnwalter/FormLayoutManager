@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dnwalter.formlayoutmanager.entity.BaseFormModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +108,18 @@ public abstract class BaseFormAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     }
 
     /**
+     * 展示数据
+     * @param viewHolder
+     * @param rowIndex 该item行下标
+     * @param columnIndex 该item列下标
+     * @param content 该item字符串内容
+     * @param colors 可用于传递字体颜色，背景颜色等
+     */
+    protected void setData(RecyclerView.ViewHolder viewHolder, int rowIndex, int columnIndex, String content, Integer... colors) {
+
+    }
+
+    /**
      * 根据不同行获取itemViewType（注：与getColumnItemViewType只能重写其中一个）
      * @param row
      * @return
@@ -121,5 +135,15 @@ public abstract class BaseFormAdapter<T> extends RecyclerView.Adapter<RecyclerVi
      */
     protected int getColumnItemViewType(int column){
         return TYPE_DEFAULT;
+    }
+
+    // 获取一行或一列的字体颜色
+    protected List<Integer> getTextColors(BaseFormModel model) {
+        return model.getTextColors();
+    }
+
+    // 获取一行或一列的背景颜色
+    protected List<Integer> getBgColors(BaseFormModel model) {
+        return model.getBgColors();
     }
 }

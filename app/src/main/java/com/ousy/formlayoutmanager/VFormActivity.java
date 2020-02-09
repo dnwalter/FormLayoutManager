@@ -15,6 +15,7 @@ import com.ousy.formlayoutmanager.adapter.TitleAdapter;
 import com.ousy.formlayoutmanager.entity.DataJson;
 import com.ousy.formlayoutmanager.entity.Monster;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +41,10 @@ public class VFormActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
 
         List<Monster> list = new Gson().fromJson(DataJson.MONSTER_DATA, new TypeToken<List<Monster>>(){}.getType());
+        List<Integer> colorList = Arrays.asList(0xff000000, 0xff000000,0xffff0000,0xff0000ff,0xff0000ff,0xff000000,0xff000000,0xff000000);
+        for (Monster monster :list){
+            monster.setTextColors(colorList);
+        }
         MonsterVAdapter adapter = new MonsterVAdapter(this, list);
         mRecyclerView.setAdapter(adapter);
 

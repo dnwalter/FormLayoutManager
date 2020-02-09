@@ -1,6 +1,8 @@
 package com.ousy.formlayoutmanager.entity;
 
-public class Monster {
+import com.dnwalter.formlayoutmanager.entity.BaseFormModel;
+
+public class Monster extends BaseFormModel {
 
     /**
      * name : 混沌战士

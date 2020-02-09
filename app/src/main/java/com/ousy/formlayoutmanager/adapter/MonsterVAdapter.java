@@ -1,6 +1,7 @@
 package com.ousy.formlayoutmanager.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +46,10 @@ public class MonsterVAdapter extends BaseVFormAdapter<Monster> {
     }
 
     @Override
-    protected void setData(RecyclerView.ViewHolder viewHolder, int rowIndex, int columnIndex, String content) {
+    protected void setData(RecyclerView.ViewHolder viewHolder, int rowIndex, int columnIndex, String content, Integer... colors) {
         ItemHolder holder = (ItemHolder) viewHolder;
         holder.tvItem.setText(content);
+        holder.tvItem.setTextColor(colors[0]);
     }
 
     @Override

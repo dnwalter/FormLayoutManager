@@ -3,6 +3,9 @@ package com.dnwalter.formlayoutmanager.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
+import com.dnwalter.formlayoutmanager.entity.BaseFormModel;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseVFormAdapter<T> extends BaseFormAdapter<T>{
@@ -22,9 +25,26 @@ public abstract class BaseVFormAdapter<T> extends BaseFormAdapter<T>{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        List<Integer> colorList = new ArrayList<>();
         int rowIndex = position / getColumnCount();
         int columnIndex = position % getColumnCount();
-        String[] columnDatas = getColumnDatas(mList.get(columnIndex));
+        T model = mList.get(columnIndex);
+        String[] columnDatas = getColumnDatas(model);
+        if (model instanceof BaseFormModel){
+            List<Integer> textColors = getTextColors((BaseFormModel) model);
+            List<Integer> bgColors = getBgColors((BaseFormModel) model);
+            if (textColors.size() > 0){
+                colorList.add(textColors.get(rowIndex));
+            }
+            if (bgColors.size() > 0){
+                colorList.add(bgColors.get(rowIndex));
+            }
+
+            Integer[] colors = new Integer[colorList.size()];
+            colorList.toArray(colors);
+            setData(holder, rowIndex, columnIndex, columnDatas[rowIndex], colors);
+        }
+
         setData(holder, rowIndex, columnIndex, columnDatas[rowIndex]);
     }
 
