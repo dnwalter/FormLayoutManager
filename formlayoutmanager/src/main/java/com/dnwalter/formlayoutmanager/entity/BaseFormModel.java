@@ -8,8 +8,8 @@ import java.util.List;
  * @date 2020/2/9
  */
 public abstract class BaseFormModel {
-    private List<Integer> textColors = new ArrayList<>();
-    private List<Integer> bgColors = new ArrayList<>();
+    protected List<Integer> textColors = new ArrayList<>();
+    protected List<Integer> bgColors = new ArrayList<>();
 
     public List<Integer> getTextColors() {
         return textColors;
