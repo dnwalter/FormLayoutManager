@@ -21,7 +21,7 @@
 	}
 #### 2、在要使用这个FormLayoutManager的module的build.gradle添加依赖(后面vX.X的版本号，可以根据releases里面最新的版本进行替换)
     dependencies {
-	        implementation 'com.github.dnwalter:FormLayoutManager:v2.1'
+	        implementation 'com.github.dnwalter:FormLayoutManager:v3.0'
 	}
 
 ## 使用
@@ -31,19 +31,38 @@
 #### FormLayoutManager默认要传入一个整型，这个整型代表的是这个表格有多少列。后面RecyclerView可以如常设置adapter，但adapter要继承一个基类
     public class MonsterHAdapter extends BaseHFormAdapter<Monster> {
 
-    @Override
-    protected String[] getRowDatas(Monster model) {
-        return new String[]{model.getName(), model.getAttribute(), model.getLv(), model.getAtk(),
-                model.getDef(), model.getRace(), model.getType1(), model.getType2()};
-    }
+      // 3.0之前的版本写法
+      @Override
+      protected String[] getRowDatas(Monster model) {
+          return new String[]{model.getName(), model.getAttribute(), model.getLv(), model.getAtk(),
+                  model.getDef(), model.getRace(), model.getType1(), model.getType2()};
+      }  
+    
+      // 3.0以及3.0以后的写法  
+      @Override
+      protected String getRowData(Monster model, int index) {
+        String result = "";
+        switch (index) {
+            case 0:
+                result = model.getName();
+                break;
+            case 1:
+                result = model.getAttribute();
+                break;
+           ……
+        }
 
-    @Override
-    public int getColumnCount() {
-        return 8;
+        return result;
     }
+    
+      @Override
+      public int getColumnCount() {
+          return 8;
+      }
     }
 #### 其他要重写的方法可看源码或看demo来了解怎么配置布局和数据，主要要重写是上面的两个方法
-#### 1、getRowDatas，你的实体哪个属性按第一列到最后列设置好
+#### 1、getRowDatas或getRowData，你的实体哪个属性按第一列到最后列设置好
 #### 2、getColumnCount，设置这个表格的列数
+#### 注：github上alpha分支为getRowDatas，gamma分支为getRowData，版本3.0开始后都换成了getRowData，若想用getRowDatas，可使用3.0以前的版本
 
 ### 以上步骤基本可以水平表格的使用，大家可以看一下源码或demo结合博客了解一下。
