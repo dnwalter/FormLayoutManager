@@ -18,7 +18,35 @@ public class MonsterHAdapter2 extends MonsterHAdapter {
     }
 
     @Override
-    protected String[] getRowDatas(Monster model) {
-        return new String[]{model.getType2(), model.getType1(), model.getRace(), model.getDef(), model.getAtk(), model.getLv(), model.getAttribute(), model.getName()};
+    protected String getRowData(Monster model, int index) {
+        String result = "";
+        switch (index) {
+            case 0:
+                result = model.getType2();
+                break;
+            case 1:
+                result = model.getType1();
+                break;
+            case 2:
+                result = model.getRace();
+                break;
+            case 3:
+                result = model.getDef();
+                break;
+            case 4:
+                result = model.getAtk();
+                break;
+            case 5:
+                result = model.getLv();
+                break;
+            case 6:
+                result = model.getAttribute();
+                break;
+            case 7:
+                result = model.getName();
+                break;
+        }
+
+        return result;
     }
 }

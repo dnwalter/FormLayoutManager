@@ -29,7 +29,7 @@ public abstract class BaseVFormAdapter<T> extends BaseFormAdapter<T>{
         int rowIndex = position / getColumnCount();
         int columnIndex = position % getColumnCount();
         T model = mList.get(columnIndex);
-        String[] columnDatas = getColumnDatas(model);
+        String columnData = getColumnData(model, rowIndex);
         if (model instanceof BaseFormModel){
             List<Integer> textColors = getTextColors((BaseFormModel) model);
             List<Integer> bgColors = getBgColors((BaseFormModel) model);
@@ -42,12 +42,17 @@ public abstract class BaseVFormAdapter<T> extends BaseFormAdapter<T>{
 
             Integer[] colors = new Integer[colorList.size()];
             colorList.toArray(colors);
-            setData(holder, rowIndex, columnIndex, columnDatas[rowIndex], colors);
+            setData(holder, rowIndex, columnIndex, columnData, colors);
         }
 
-        setData(holder, rowIndex, columnIndex, columnDatas[rowIndex]);
+        setData(holder, rowIndex, columnIndex, columnData);
     }
 
-    // 获取一列的数据
-    protected abstract String[] getColumnDatas(T model);
+    /**
+     * 获取一列的数据
+     * @param model
+     * @param index 行的下标
+     * @return
+     */
+    protected abstract String getColumnData(T model, int index);
 }

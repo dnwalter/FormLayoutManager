@@ -116,7 +116,7 @@ public abstract class BaseFormAdapter<T> extends RecyclerView.Adapter<RecyclerVi
      * @param rowIndex 该item行下标
      * @param columnIndex 该item列下标
      * @param content 该item字符串内容
-     * @param colors 可用于传递字体颜色，背景颜色等
+     * @param colors 可用于传递颜色值 colors[0]：字体颜色，colors[1]：背景颜色
      */
     protected void setData(RecyclerView.ViewHolder viewHolder, int rowIndex, int columnIndex, String content, Integer... colors) {
 
