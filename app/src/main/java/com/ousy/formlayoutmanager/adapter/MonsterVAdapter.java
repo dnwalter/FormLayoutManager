@@ -53,9 +53,36 @@ public class MonsterVAdapter extends BaseVFormAdapter<Monster> {
     }
 
     @Override
-    protected String[] getColumnDatas(Monster model) {
-        return new String[]{model.getName(), model.getAttribute(), model.getLv(), model.getAtk(),
-                model.getDef(), model.getRace(), model.getType1(), model.getType2()};
+    protected String getColumnData(Monster model, int index) {
+        String result = "";
+        switch (index) {
+            case 0:
+                result = model.getName();
+                break;
+            case 1:
+                result = model.getAttribute();
+                break;
+            case 2:
+                result = model.getLv();
+                break;
+            case 3:
+                result = model.getAtk();
+                break;
+            case 4:
+                result = model.getDef();
+                break;
+            case 5:
+                result = model.getRace();
+                break;
+            case 6:
+                result = model.getType1();
+                break;
+            case 7:
+                result = model.getType2();
+                break;
+        }
+
+        return result;
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder {

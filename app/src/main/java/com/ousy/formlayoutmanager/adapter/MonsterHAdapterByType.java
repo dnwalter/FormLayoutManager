@@ -25,9 +25,36 @@ public class MonsterHAdapterByType extends BaseHFormAdapter<Monster> {
     }
 
     @Override
-    protected String[] getRowDatas(Monster model) {
-        return new String[]{model.getName(), model.getAttribute(), model.getLv(), model.getAtk(),
-                model.getDef(), model.getRace(), model.getType1(), model.getType2()};
+    protected String getRowData(Monster model, int index) {
+        String result = "";
+        switch (index) {
+            case 0:
+                result = model.getName();
+                break;
+            case 1:
+                result = model.getAttribute();
+                break;
+            case 2:
+                result = model.getLv();
+                break;
+            case 3:
+                result = model.getAtk();
+                break;
+            case 4:
+                result = model.getDef();
+                break;
+            case 5:
+                result = model.getRace();
+                break;
+            case 6:
+                result = model.getType1();
+                break;
+            case 7:
+                result = model.getType2();
+                break;
+        }
+
+        return result;
     }
 
     public MonsterHAdapterByType(Context context, List<Monster> list) {
