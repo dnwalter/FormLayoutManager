@@ -345,6 +345,16 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         return mIsCanScrollH;
     }
 
+    private boolean mIsScrollTop;
+    public boolean isScrollTop() {
+        return mIsScrollTop;
+    }
+
+    private boolean mIsScrollBottom;
+    public boolean isScrollBottom() {
+        return mIsScrollBottom;
+    }
+
     // 处理垂直滚动
     @Override
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler,
@@ -354,14 +364,18 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
             return dy;
         }
 
+        mIsScrollTop = false;
+        mIsScrollBottom = false;
         int travel = dy;
         //如果滑动到最顶部
         if (mSumDy + dy < 0) {
             travel = -mSumDy;
+            mIsScrollTop = true;
         }
         else if (mSumDy + dy > mTotalHeight - getVerticalSpace()) {
             //如果滑动到最底部
             travel = mTotalHeight - getVerticalSpace() - mSumDy;
+            mIsScrollBottom = true;
         }
 
         mSumDy += travel;

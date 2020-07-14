@@ -38,4 +38,8 @@ public class MainActivity extends AppCompatActivity {
     public void onHByTypeClick(View view){
         startActivity(new Intent(this, HForm2Activity.class));
     }
+
+    public void onIssuesClick(View view){
+        startActivity(new Intent(this, IssuesActivity.class));
+    }
 }
