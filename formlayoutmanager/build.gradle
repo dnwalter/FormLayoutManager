@@ -5,6 +5,10 @@ group='com.github.trevonnling'
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 28
+    }
 
     buildTypes {
         release {

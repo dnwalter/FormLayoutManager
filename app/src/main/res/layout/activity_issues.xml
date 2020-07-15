@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Button
+        android:id="@+id/btn_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="显示dialog"
+        android:onClick="onTestClick" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentBottom="true"
+        app:behavior_hideable="true"
+        android:background="#000fff"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+        tools:ignore="MissingPrefix" />
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/ll_test"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:background="#000fff"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        app:behavior_hideable="true"-->
+<!--        app:behavior_peekHeight="90dp"-->
+<!--        app:layout_behavior="android.support.design.widget.BottomSheetBehavior"-->
+<!--        tools:ignore="MissingPrefix" />-->
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,6 +1,7 @@
 package com.dnwalter.formlayoutmanager.layoutmanager;
 
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -539,6 +540,36 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
     private Rect getVisibleArea() {
         Rect result = new Rect(getPaddingLeft() + mSumDx, getPaddingTop() + mSumDy, getWidth() + getPaddingRight() + mSumDx, getVerticalSpace() + mSumDy);
         return result;
+    }
+
+    @Override
+    public int computeVerticalScrollOffset(@NonNull RecyclerView.State state) {
+        return mSumDy;
+    }
+
+    @Override
+    public int computeVerticalScrollRange(@NonNull RecyclerView.State state) {
+        return mTotalHeight;
+    }
+
+    @Override
+    public int computeVerticalScrollExtent(@NonNull RecyclerView.State state) {
+        return getVerticalSpace();
+    }
+
+    @Override
+    public int computeHorizontalScrollOffset(@NonNull RecyclerView.State state) {
+        return mSumDx;
+    }
+
+    @Override
+    public int computeHorizontalScrollRange(@NonNull RecyclerView.State state) {
+        return mTotalWidth;
+    }
+
+    @Override
+    public int computeHorizontalScrollExtent(@NonNull RecyclerView.State state) {
+        return getHorizontalSpace();
     }
 
     public @interface StartShowType {
