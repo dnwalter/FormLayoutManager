@@ -83,4 +83,58 @@ public class HVSingleRecylerView extends RecyclerView {
         }
         return super.fling(velocityX, velocityY);
     }
+
+    @Override
+    public int computeHorizontalScrollOffset() {
+        if (getLayoutManager() == null) {
+            return 0;
+        } else {
+            return getLayoutManager().computeHorizontalScrollOffset(new RecyclerView.State());
+        }
+    }
+
+    @Override
+    public int computeHorizontalScrollExtent() {
+        if (getLayoutManager() == null) {
+            return 0;
+        } else {
+            return getLayoutManager().computeHorizontalScrollExtent(new RecyclerView.State());
+        }
+    }
+
+    @Override
+    public int computeHorizontalScrollRange() {
+        if (getLayoutManager() == null) {
+            return 0;
+        } else {
+            return getLayoutManager().computeHorizontalScrollRange(new RecyclerView.State());
+        }
+    }
+
+    @Override
+    public int computeVerticalScrollOffset() {
+        if (getLayoutManager() == null) {
+            return 0;
+        } else {
+            return getLayoutManager().computeVerticalScrollOffset(new RecyclerView.State());
+        }
+    }
+
+    @Override
+    public int computeVerticalScrollExtent() {
+        if (getLayoutManager() == null) {
+            return 0;
+        } else {
+            return getLayoutManager().computeVerticalScrollExtent(new RecyclerView.State());
+        }
+    }
+
+    @Override
+    public int computeVerticalScrollRange() {
+        if (getLayoutManager() == null) {
+            return 0;
+        } else {
+            return getLayoutManager().computeVerticalScrollRange(new RecyclerView.State());
+        }
+    }
 }
