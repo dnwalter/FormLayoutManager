@@ -22,7 +22,6 @@
         <activity android:name=".VFormActivity"/>
         <activity android:name=".HVFormActivity"/>
         <activity android:name=".TFormActivity"/>
-        <activity android:name=".IssuesActivity"/>
     </application>
 
 </manifest>
