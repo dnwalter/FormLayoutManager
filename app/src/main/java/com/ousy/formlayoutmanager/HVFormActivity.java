@@ -48,7 +48,7 @@ public class HVFormActivity extends AppCompatActivity {
         TitleAdapter topAdapter = new TitleAdapter(titleList);
         rvTopTitle.setAdapter(topAdapter);
 
-        FormLayoutManager layoutManager = new FormLayoutManager(8);
+        FormLayoutManager layoutManager = new FormLayoutManager(8, mRecyclerView);
         mRecyclerView.setLayoutManager(layoutManager);
 
         List<Monster> list = new Gson().fromJson(DataJson.MONSTER_DATA, new TypeToken<List<Monster>>(){}.getType());

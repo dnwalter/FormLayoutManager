@@ -36,7 +36,7 @@ public class VFormActivity extends AppCompatActivity {
         TitleAdapter rightTitleAdapter = new TitleAdapter(titleList);
         rvTitle.setAdapter(rightTitleAdapter);
 
-        FormLayoutManager layoutManager = new FormLayoutManager(false, 8);
+        FormLayoutManager layoutManager = new FormLayoutManager(false, 8, mRecyclerView);
         mRecyclerView.setLayoutManager(layoutManager);
 
         List<Monster> list = new Gson().fromJson(DataJson.MONSTER_DATA, new TypeToken<List<Monster>>(){}.getType());

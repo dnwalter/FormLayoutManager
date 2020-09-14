@@ -80,7 +80,8 @@ public class TFormActivity extends AppCompatActivity {
         });
 
         List<Monster> list = new Gson().fromJson(DataJson.MONSTER_DATA, new TypeToken<List<Monster>>(){}.getType());
-        FormLayoutManager rightLayoutManager = new FormLayoutManager(8);
+
+        FormLayoutManager rightLayoutManager = new FormLayoutManager(8, rvRightForm);
         rvRightForm.setLayoutManager(rightLayoutManager);
         MonsterHAdapter rightAdapter = new MonsterHAdapter(this, list);
         rvRightForm.setAdapter(rightAdapter);
