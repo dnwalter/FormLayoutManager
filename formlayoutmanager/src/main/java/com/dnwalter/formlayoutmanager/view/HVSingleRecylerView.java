@@ -1,13 +1,14 @@
 package com.dnwalter.formlayoutmanager.view;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.dnwalter.formlayoutmanager.layoutmanager.FormLayoutManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @author ousiyuan
@@ -48,16 +49,18 @@ public class HVSingleRecylerView extends RecyclerView {
                 float dx = e.getX() - mDownX;
                 float dy = e.getY() - mDownY;
                 if (mScrollType == -1) {
-                    FormLayoutManager layoutManager = (FormLayoutManager) getLayoutManager();
-                    if (Math.abs(dx) > Math.abs(dy)) {
-                        mScrollType = RecyclerView.HORIZONTAL;
-                        mPreScrollType = RecyclerView.HORIZONTAL;
-                        layoutManager.setCanScrollV(false);
-                    }
-                    else {
-                        mScrollType = RecyclerView.VERTICAL;
-                        mPreScrollType = RecyclerView.VERTICAL;
-                        layoutManager.setCanScrollH(false);
+                    if (Math.abs(dx) != 0 || Math.abs(dy) != 0) {
+                        FormLayoutManager layoutManager = (FormLayoutManager) getLayoutManager();
+                        if (Math.abs(dx) > Math.abs(dy)) {
+                            mScrollType = RecyclerView.HORIZONTAL;
+                            mPreScrollType = RecyclerView.HORIZONTAL;
+                            layoutManager.setCanScrollV(false);
+                        }
+                        else {
+                            mScrollType = RecyclerView.VERTICAL;
+                            mPreScrollType = RecyclerView.VERTICAL;
+                            layoutManager.setCanScrollH(false);
+                        }
                     }
                 }
                 break;
