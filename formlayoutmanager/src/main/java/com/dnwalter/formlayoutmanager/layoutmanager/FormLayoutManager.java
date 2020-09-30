@@ -141,6 +141,8 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
 
         if (getItemCount() == 0) {
             detachAndScrapAttachedViews(recycler);
+            Message message = mHandler.obtainMessage(FIRST_INIT_FINISH);
+            mHandler.handleMessage(message);
             return;
         }
 
@@ -158,119 +160,122 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         mCurRow = 0;
         mCurColumn = 0;
 
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < getItemCount(); i++) {
-                    // item所在的行和列的index
-                    int row = i / mColumnCount;
-                    int column = i % mColumnCount;
-
-                    View itemView = mRecycler.getViewForPosition(i);
-                    Integer itemViewType = getItemViewType(itemView);
-                    int itemWidth;
-                    int itemHeight;
-                    if (mItemViewSizeMap.containsKey(itemViewType)){
-                        itemWidth = mItemViewSizeMap.get(itemViewType).width;
-                        itemHeight = mItemViewSizeMap.get(itemViewType).height;
-                    }else{
-                        measureChildWithMargins(itemView, 0, 0);
-                        itemWidth = getDecoratedMeasuredWidth(itemView);
-                        itemHeight = getDecoratedMeasuredHeight(itemView);
-                        isItemLayoutError(itemWidth, itemHeight);
-                        mItemViewSizeMap.put(itemViewType, new ItemViewSize(itemWidth, itemHeight));
-                    }
-
-                    Rect rect = getViewRect(row, column, itemWidth, itemHeight);
-                    mItemRects.add(rect);
-                    mHasAttachedItems.add(false);
-                }
-
-                Rect lastRect = mItemRects.get(mItemRects.size() - 1);
-
-                //如果所有子View的高度和没有填满RecyclerView的高度，
-                // 则将高度设置为RecyclerView的高度
-                mTotalWidth = Math.max(lastRect.right, getHorizontalSpace());
-                mTotalHeight = Math.max(lastRect.bottom, getVerticalSpace());
-
-                if ((mStartShowType & RIGHT) > 0 && mDefaultStartDx == 0){
-                    mDefaultStartDx = mTotalWidth - getHorizontalSpace();
-                    mSumDx = mDefaultStartDx;
-                }
-
-                if ((mStartShowType & BOTTOM) > 0 && mDefaultStartDy == 0){
-                    mDefaultStartDy = mTotalHeight - getVerticalSpace();
-                    mSumDy = mDefaultStartDy;
-                }
-
-                // 第一个显示在界面的item的下标
-                int firstShowRow = 0;
-                int firstShowCol = 0;
-                for (int i = 0; i < getItemCount(); i++) {
-                    // item所在的行和列的index
-                    int row = i / mColumnCount;
-                    int column = i % mColumnCount;
-                    if (Rect.intersects(getVisibleArea(), mItemRects.get(i))){
-                        firstShowRow = row;
-                        firstShowCol = column;
-                        break;
-                    }
-                }
-
-                /**
-                 * 计算可视个数和下标
-                 * 由于itemView可以有不同的type，那个itemView的宽高可能会不一样
-                 * 故以最小的宽和最小的高来计算最大可视数
-                 */
-                int minWidth = 0;
-                int minHeight = 0;
-                for (ItemViewSize viewSize : mItemViewSizeMap.values()){
-                    if (minWidth == 0){
-                        minWidth = viewSize.width;
-                        minHeight = viewSize.height;
-                    }else{
-                        if (viewSize.width < minWidth){
-                            minWidth = viewSize.width;
-                        }
-                        if (viewSize.height < minHeight){
-                            minHeight = viewSize.height;
-                        }
-                    }
-                }
-
-                // 可视的最大行数，列数
-                int visibleRowCount = (int) Math.ceil(getVerticalSpace() * 1f / minHeight) + 1;
-                int visibleColumnCount = (int) Math.ceil(getHorizontalSpace() * 1f / minWidth) + 1;
-
-                /**
-                 * 第一次加载数据的时候，下面的代码只加载起始默认滚动到的位置的view
-                 * 第一种只刷新当前界面可视的view
-                 */
-                here:
-                for (int row = firstShowRow; row < visibleRowCount + firstShowRow; row++) {
-                    for (int column = firstShowCol; column < visibleColumnCount + firstShowCol; column++) {
-                        int itemPosition = row * mColumnCount + column;
-
-                        if (itemPosition >= mItemRects.size()){
-                            break here;
-                        }
-                        Rect rect = mItemRects.get(itemPosition);
-                        if (!Rect.intersects(getVisibleArea(), rect)){
-                            continue;
-                        }
-                        View view = mRecycler.getViewForPosition(itemPosition);
-                        addView(view);
-                        //addView后一定要measure，先measure再layout
-                        measureChildWithMargins(view, 0, 0);
-                        layoutDecorated(view, rect.left - mSumDx, rect.top - mSumDy, rect.right - mSumDx, rect.bottom - mSumDy);
-                    }
-                }
-
-                Message message = mHandler.obtainMessage(FIRST_INIT_FINISH);
-                mHandler.handleMessage(message);
-            }
-        });
+        mHandler.removeCallbacks(mRunnable);
+        mHandler.post(mRunnable);
     }
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            for (int i = 0; i < getItemCount(); i++) {
+                // item所在的行和列的index
+                int row = i / mColumnCount;
+                int column = i % mColumnCount;
+
+                View itemView = mRecycler.getViewForPosition(i);
+                Integer itemViewType = getItemViewType(itemView);
+                int itemWidth;
+                int itemHeight;
+                if (mItemViewSizeMap.containsKey(itemViewType)){
+                    itemWidth = mItemViewSizeMap.get(itemViewType).width;
+                    itemHeight = mItemViewSizeMap.get(itemViewType).height;
+                }else{
+                    measureChildWithMargins(itemView, 0, 0);
+                    itemWidth = getDecoratedMeasuredWidth(itemView);
+                    itemHeight = getDecoratedMeasuredHeight(itemView);
+                    isItemLayoutError(itemWidth, itemHeight);
+                    mItemViewSizeMap.put(itemViewType, new ItemViewSize(itemWidth, itemHeight));
+                }
+
+                Rect rect = getViewRect(row, column, itemWidth, itemHeight);
+                mItemRects.add(rect);
+                mHasAttachedItems.add(false);
+            }
+
+            Rect lastRect = mItemRects.get(mItemRects.size() - 1);
+
+            //如果所有子View的高度和没有填满RecyclerView的高度，
+            // 则将高度设置为RecyclerView的高度
+            mTotalWidth = Math.max(lastRect.right, getHorizontalSpace());
+            mTotalHeight = Math.max(lastRect.bottom, getVerticalSpace());
+
+            if ((mStartShowType & RIGHT) > 0 && mDefaultStartDx == 0){
+                mDefaultStartDx = mTotalWidth - getHorizontalSpace();
+                mSumDx = mDefaultStartDx;
+            }
+
+            if ((mStartShowType & BOTTOM) > 0 && mDefaultStartDy == 0){
+                mDefaultStartDy = mTotalHeight - getVerticalSpace();
+                mSumDy = mDefaultStartDy;
+            }
+
+            // 第一个显示在界面的item的下标
+            int firstShowRow = 0;
+            int firstShowCol = 0;
+            for (int i = 0; i < getItemCount(); i++) {
+                // item所在的行和列的index
+                int row = i / mColumnCount;
+                int column = i % mColumnCount;
+                if (Rect.intersects(getVisibleArea(), mItemRects.get(i))){
+                    firstShowRow = row;
+                    firstShowCol = column;
+                    break;
+                }
+            }
+
+            /**
+             * 计算可视个数和下标
+             * 由于itemView可以有不同的type，那个itemView的宽高可能会不一样
+             * 故以最小的宽和最小的高来计算最大可视数
+             */
+            int minWidth = 0;
+            int minHeight = 0;
+            for (ItemViewSize viewSize : mItemViewSizeMap.values()){
+                if (minWidth == 0){
+                    minWidth = viewSize.width;
+                    minHeight = viewSize.height;
+                }else{
+                    if (viewSize.width < minWidth){
+                        minWidth = viewSize.width;
+                    }
+                    if (viewSize.height < minHeight){
+                        minHeight = viewSize.height;
+                    }
+                }
+            }
+
+            // 可视的最大行数，列数
+            int visibleRowCount = (int) Math.ceil(getVerticalSpace() * 1f / minHeight) + 1;
+            int visibleColumnCount = (int) Math.ceil(getHorizontalSpace() * 1f / minWidth) + 1;
+
+            /**
+             * 第一次加载数据的时候，下面的代码只加载起始默认滚动到的位置的view
+             * 第一种只刷新当前界面可视的view
+             */
+            here:
+            for (int row = firstShowRow; row < visibleRowCount + firstShowRow; row++) {
+                for (int column = firstShowCol; column < visibleColumnCount + firstShowCol; column++) {
+                    int itemPosition = row * mColumnCount + column;
+
+                    if (itemPosition >= mItemRects.size()){
+                        break here;
+                    }
+                    Rect rect = mItemRects.get(itemPosition);
+                    if (!Rect.intersects(getVisibleArea(), rect)){
+                        continue;
+                    }
+                    View view = mRecycler.getViewForPosition(itemPosition);
+                    addView(view);
+                    //addView后一定要measure，先measure再layout
+                    measureChildWithMargins(view, 0, 0);
+                    layoutDecorated(view, rect.left - mSumDx, rect.top - mSumDy, rect.right - mSumDx, rect.bottom - mSumDy);
+                }
+            }
+
+            Message message = mHandler.obtainMessage(FIRST_INIT_FINISH);
+            mHandler.handleMessage(message);
+        }
+    };
 
     /**
      * 表格是否多类型标志
