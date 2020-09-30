@@ -15,18 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
  * @date 2019/10/18
  * 只能单方向滑动的recyclerview，当手指松开才能改变方向
  */
-public class HVSingleRecylerView extends RecyclerView {
+public class HVSingleRecyclerView extends RecyclerView {
     // 滚动的类型
     private int mScrollType = -1;
     private int mPreScrollType = RecyclerView.VERTICAL;
     private float mDownX;
     private float mDownY;
 
-    public HVSingleRecylerView(@NonNull Context context) {
+    public HVSingleRecyclerView(@NonNull Context context) {
         super(context);
     }
 
-    public HVSingleRecylerView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public HVSingleRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -92,7 +92,7 @@ public class HVSingleRecylerView extends RecyclerView {
         if (getLayoutManager() == null) {
             return 0;
         } else {
-            return getLayoutManager().computeHorizontalScrollOffset(new RecyclerView.State());
+            return getLayoutManager().computeHorizontalScrollOffset(new State());
         }
     }
 
@@ -101,7 +101,7 @@ public class HVSingleRecylerView extends RecyclerView {
         if (getLayoutManager() == null) {
             return 0;
         } else {
-            return getLayoutManager().computeHorizontalScrollExtent(new RecyclerView.State());
+            return getLayoutManager().computeHorizontalScrollExtent(new State());
         }
     }
 
@@ -110,7 +110,7 @@ public class HVSingleRecylerView extends RecyclerView {
         if (getLayoutManager() == null) {
             return 0;
         } else {
-            return getLayoutManager().computeHorizontalScrollRange(new RecyclerView.State());
+            return getLayoutManager().computeHorizontalScrollRange(new State());
         }
     }
 
@@ -119,7 +119,7 @@ public class HVSingleRecylerView extends RecyclerView {
         if (getLayoutManager() == null) {
             return 0;
         } else {
-            return getLayoutManager().computeVerticalScrollOffset(new RecyclerView.State());
+            return getLayoutManager().computeVerticalScrollOffset(new State());
         }
     }
 
@@ -128,7 +128,7 @@ public class HVSingleRecylerView extends RecyclerView {
         if (getLayoutManager() == null) {
             return 0;
         } else {
-            return getLayoutManager().computeVerticalScrollExtent(new RecyclerView.State());
+            return getLayoutManager().computeVerticalScrollExtent(new State());
         }
     }
 
@@ -137,7 +137,7 @@ public class HVSingleRecylerView extends RecyclerView {
         if (getLayoutManager() == null) {
             return 0;
         } else {
-            return getLayoutManager().computeVerticalScrollRange(new RecyclerView.State());
+            return getLayoutManager().computeVerticalScrollRange(new State());
         }
     }
 }
