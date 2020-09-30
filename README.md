@@ -22,10 +22,10 @@
 #### 2、在要使用这个FormLayoutManager的module的build.gradle添加依赖(后面vX.X的版本号，可以根据releases里面最新的版本进行替换)
     dependencies {
                 // android
-	        implementation 'com.github.dnwalter:FormLayoutManager:v3.2'
+	        implementation 'com.github.dnwalter:FormLayoutManager:v4.0'
 		
 		// 适用androidx，想查看androidx的代码可以切换到masterX分支
-		implementation 'com.github.dnwalter:FormLayoutManager:v3.2x'
+		implementation 'com.github.dnwalter:FormLayoutManager:v4.0x'
 	}
 
 ## 使用
