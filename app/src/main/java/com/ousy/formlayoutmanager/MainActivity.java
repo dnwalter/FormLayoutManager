@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
+import com.ousy.formlayoutmanager.editForm.EditFormActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,5 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onHByTypeClick(View view){
         startActivity(new Intent(this, HForm2Activity.class));
+    }
+
+    public void onEditTypeClick(View view){
+        startActivity(new Intent(this, EditFormActivity.class));
     }
 }

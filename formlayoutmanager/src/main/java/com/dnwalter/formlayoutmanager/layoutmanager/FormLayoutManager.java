@@ -81,6 +81,16 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         mItemCount = 0;
     }
 
+    public void setColumnCount(int columnCount) {
+        mColumnCount = columnCount;
+        reset();
+    }
+
+    public void setRowCount(int rowCount) {
+        mRowCount = rowCount;
+        reset();
+    }
+
     private int getColumnCount() {
         if (mIsHorV){
             return mColumnCount;

@@ -35,6 +35,13 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.ItemHolder>{
         holder.tvItem.setText(mList.get(position));
     }
 
+    // 刷新数据
+    public void refreshData(List<String> list) {
+        mList.clear();
+        mList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mList.size();

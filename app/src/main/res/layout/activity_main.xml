@@ -44,4 +44,10 @@
         android:text="多类型的表格"
         android:onClick="onHByTypeClick" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="动态编辑表格列demo"
+        android:onClick="onEditTypeClick" />
+
 </LinearLayout>
