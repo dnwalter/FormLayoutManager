@@ -12,7 +12,7 @@
         android:text="显示dialog"
         android:onClick="onTestClick" />
 
-    <com.dnwalter.formlayoutmanager.view.HVSingleRecylerView
+    <com.dnwalter.formlayoutmanager.view.HVSingleRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="250dp"

@@ -11,7 +11,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.dnwalter.formlayoutmanager.view.HVSingleRecylerView
+    <com.dnwalter.formlayoutmanager.view.HVSingleRecyclerView
         android:id="@+id/rv_vertical"
         android:layout_width="0dp"
         android:layout_height="250dp"
