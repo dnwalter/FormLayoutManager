@@ -29,7 +29,7 @@ public class IssuesActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.recycler_view);
 
-        mLayoutManager = new FormLayoutManager(10);
+        mLayoutManager = new FormLayoutManager(10, mRecyclerView);
         // 起始位置滚动到右底部
         mRecyclerView.setLayoutManager(mLayoutManager);
 

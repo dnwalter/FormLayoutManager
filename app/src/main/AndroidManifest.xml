@@ -23,6 +23,7 @@
         <activity android:name=".HVFormActivity"/>
         <activity android:name=".TFormActivity"/>
         <activity android:name=".IssuesActivity"/>
+        <activity android:name=".editForm.EditFormActivity"/>
     </application>
 
 </manifest>

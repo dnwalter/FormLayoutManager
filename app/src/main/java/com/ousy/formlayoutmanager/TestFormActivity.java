@@ -29,7 +29,7 @@ public class TestFormActivity extends AppCompatActivity {
         cbH = findViewById(R.id.cb_h);
         cbV = findViewById(R.id.cb_v);
 
-        mLayoutManager = new FormLayoutManager(10);
+        mLayoutManager = new FormLayoutManager(10, mRecyclerView);
         // 起始位置滚动到右底部
         mLayoutManager.startShow(FormLayoutManager.StartShowType.RIGHT | FormLayoutManager.StartShowType.BOTTOM);
         mRecyclerView.setLayoutManager(mLayoutManager);
