@@ -66,6 +66,17 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
     }
 
     /**
+     *  设置可复用的viewHolder最大的size
+     * @param viewType itemView的类型
+     * @param maxSize 最大可复用数量
+     */
+    public void setRecycleMaxSize(int viewType, int maxSize) {
+        RecyclerView.RecycledViewPool recyclerPool = new RecyclerView.RecycledViewPool();
+        recyclerPool.setMaxRecycledViews(viewType, maxSize);
+        mRecyclerView.setRecycledViewPool(recyclerPool);
+    }
+
+    /**
      * recyclerview默认是显示左顶位置
      * 若想默认起始的时候显示在右边或底部，或右底部可以设置这个值
      * @param type
