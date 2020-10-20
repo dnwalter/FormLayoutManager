@@ -50,11 +50,11 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
      * 什么场景需要传入RecyclerView
      * 在滚动过程会刷新的数据的时候，最好设置RecyclerView
      */
-    public FormLayoutManager(int columnCount, RecyclerView recyclerView){
+    public FormLayoutManager(int columnCount, RecyclerView recyclerView) {
         this(true, columnCount, recyclerView);
     }
 
-    public FormLayoutManager(boolean isHorV, int count, RecyclerView recyclerView){
+    public FormLayoutManager(boolean isHorV, int count, RecyclerView recyclerView) {
         mIsHorV = isHorV;
         if (isHorV){
             mColumnCount = count;
@@ -62,6 +62,17 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
             mRowCount = count;
         }
         mRecyclerView = recyclerView;
+    }
+
+    /**
+     *  设置可复用的viewHolder最大的size
+     * @param viewType itemView的类型
+     * @param maxSize 最大可复用数量
+     */
+    public void setRecycleMaxSize(int viewType, int maxSize) {
+        RecyclerView.RecycledViewPool recyclerPool = new RecyclerView.RecycledViewPool();
+        recyclerPool.setMaxRecycledViews(viewType, maxSize);
+        mRecyclerView.setRecycledViewPool(recyclerPool);
     }
 
     /**
