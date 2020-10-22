@@ -95,15 +95,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
         if (mIsHorV){
             return mColumnCount;
         }else{
-            return (getItemCount() - 1) / mRowCount + 1;
-        }
-    }
-
-    private int getRowCount() {
-        if (mIsHorV){
-            return (getItemCount() - 1) / mColumnCount + 1;
-        }else{
-            return mRowCount;
+            return getItemCount() / mRowCount;
         }
     }
 
@@ -155,9 +147,7 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
             return;
         }
 
-        if (mIsHorV){
-            mRowCount = getRowCount();
-        }else{
+        if (!mIsHorV){
             mColumnCount = getColumnCount();
         }
 
@@ -332,11 +322,13 @@ public class FormLayoutManager extends RecyclerView.LayoutManager {
             Rect lastRect = mItemRects.get(mItemRects.size() - 1);
             if (mCurRow != row){
                 mCurRow = row;
+                mCurColumn = column;
                 left = 0;
                 right = itemWidth;
                 top = lastRect.bottom;
                 bottom = top + itemHeight;
             }else if (mCurColumn != column){
+                mCurRow = row;
                 mCurColumn = column;
                 left = lastRect.right;
                 right = left + itemWidth;
